@@ -1,3 +1,16 @@
-from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.db.models import CharField, IntegerField, TextChoices, TextField, ImageField, Model, DateTimeField, \
+    ForeignKey, SET_NULL
 
-# Create your models here.
+class User(AbstractUser):
+    class TYPE(TextChoices):
+        ADMIN='admin','Admin',
+        USER='user','User',
+    secret_word=CharField(max_length=50,null=True,blank=True)
+    secret_number=IntegerField(null=True,blank=True)
+    phone_number=IntegerField(null=True,blank=True)
+    role=CharField(max_length=50,choices=TYPE.choices,default=TYPE.USER)
+    about=TextField(null=True,blank=True)
+    image=ImageField(upload_to='avatar/%y/%m/%d',null=True,blank=True)
+    film_history=ForeignKey('film.Film',related_name='film_history',on_delete=SET_NULL,null=True,blank=True)
+
